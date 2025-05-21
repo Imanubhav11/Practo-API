@@ -1,12 +1,11 @@
 import { Request, Response } from 'express';
 import {
   doctors,
-  createDoctor,
+  addDoctor,
   getDoctorById,
-  updateDoctor,
-  deleteDoctor,
+  editDoctor,
+  removeDoctor,
 } from '../services/DoctorService';
-import  bcrypt from 'bcryptjs';
 
 const allowedFileExtensions = ['.jpeg', '.jpg', '.png', '.pdf'];
 const MAX_SIZE = 5 * 1024 * 1024; // 5MB
@@ -24,8 +23,9 @@ const validateFile = (file: any, fieldName: string): string | null => {
 };
 
 
-export const addDoctor = async (req: Request, res: Response):Promise<void> => {
-    console.log(req.body);
+
+export const createDoctor =  (req: Request, res: Response):void => {
+    // console.log(req.body);
     try {
       const {
         phoneNumber,
@@ -70,19 +70,18 @@ export const addDoctor = async (req: Request, res: Response):Promise<void> => {
          res.status(400).json({ message: 'Validation failed', errors });
          return;
       }
-  
-      // Hash the password before saving
-      const hashedPassword = await bcrypt.hash(password, 10);
-  
-      const newDoctor = createDoctor({
+
+
+        const newDoctor = addDoctor({
         phoneNumber,
-        password: hashedPassword,
+        password,
         ...otherFields,
-      });
+        });
+
   
       res.status(201).json(newDoctor);
     } catch (error) {
-      console.error('Upload Error:', error);
+    //   console.error('Upload Error:', error);
       res.status(500).json({ message: 'Internal server error', error });
     }
   };
@@ -107,8 +106,8 @@ export const getDoctor = (req: Request, res: Response): void => {
   res.status(200).json(doctor);
 };
 
-export const editDoctor = (req: Request, res: Response): void => {
-  const updated = updateDoctor(req.params.id, req.body);
+export const updateDoctor = (req: Request, res: Response): void => {
+  const updated = editDoctor(req.params.id, req.body);
   if (!updated) {
     res.status(404).json({ message: 'Doctor not found' });
     return;
@@ -116,8 +115,8 @@ export const editDoctor = (req: Request, res: Response): void => {
   res.status(200).json(updated);
 };
 
-export const removeDoctor = (req: Request, res: Response): void => {
-  const success = deleteDoctor(req.params.id);
+export const deleteDoctor = (req: Request, res: Response): void => {
+  const success = removeDoctor(req.params.id);
   if (!success) {
     res.status(404).json({ message: 'Doctor not found' });
     return;

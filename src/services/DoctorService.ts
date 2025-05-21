@@ -4,7 +4,7 @@ import bcrypt from 'bcryptjs';
 
 export const doctors: Doctor[] = [];
 
-export const createDoctor = (data: Omit<Doctor, 'id'>): Doctor => {
+export const addDoctor = (data: Omit<Doctor, 'id'>): Doctor => {
   const hashedPassword = bcrypt.hashSync(data.password, 10);
 
   const newDoctor: Doctor = {
@@ -25,7 +25,7 @@ export const getDoctorById = (id: string): Doctor | undefined => {
   return doctors.find((doc) => doc.id === id);
 };
 
-export const updateDoctor = (id: string, updates: Partial<Doctor>): Doctor | undefined => {
+export const editDoctor = (id: string, updates: Partial<Doctor>): Doctor | undefined => {
   const index = doctors.findIndex((doc) => doc.id === id);
   if (index === -1) return undefined;
 
@@ -41,7 +41,7 @@ export const updateDoctor = (id: string, updates: Partial<Doctor>): Doctor | und
   return doctors[index];
 };
 
-export const deleteDoctor = (id: string): boolean => {
+export const removeDoctor = (id: string): boolean => {
   const index = doctors.findIndex((doc) => doc.id === id);
   if (index === -1) return false;
   doctors.splice(index, 1);
