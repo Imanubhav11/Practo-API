@@ -4,6 +4,7 @@ import bodyParser from 'body-parser';
 import fileUpload from 'express-fileupload';
 import doctorRoutes from './routes/DoctorRoutes';
 import PatientRoutes from './routes/PatientRoutes';
+import PharmacyRoutes from './routes/PharmacyRoutes';
 
 const app = express();
 const PORT = 3000;
@@ -21,6 +22,7 @@ app.use(fileUpload({
 
 app.use('/api', doctorRoutes);
 app.use('/api', PatientRoutes);
+app.use('/api', PharmacyRoutes);
 
 
 app.get('/health', (req, res) => {
