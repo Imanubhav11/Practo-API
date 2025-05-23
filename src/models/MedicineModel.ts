@@ -12,7 +12,9 @@ export enum MedicineCategory {
     category: MedicineCategory;
     description: string;
     price: number;
-    stock: number;
+    discountedPrice?: number;
+    quantity: string;
+    stock: boolean; // Changed from number to boolean
     pharmacyId: string; // Reference to Pharmacy
     image?: string;
     requiresPrescription: boolean;
